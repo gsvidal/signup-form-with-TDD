@@ -41,14 +41,19 @@ test('should be able to type a password confirmation', () => {
 
 test('should show email error message on invalid email', () => {
   render(<App />);
+
   const emailInputElement = screen.getByRole('textbox', {
     name: /Email address/i,
   });
   const submitButton = screen.getByRole('button', { name: /submit/i });
-  const errorEmailMessage = screen.getByText('Email input is invalid');
-  expect(errorEmailMessage).not.toBeInTheDocument();
+  const errorEmailMessageElement = screen.queryByText('Email input is invalid');
+
+  expect(errorEmailMessageElement).not.toBeInTheDocument();
 
   userEvent.type(emailInputElement, 'gonzalovidal.devgmail.com');
   userEvent.click(submitButton);
-  expect(errorEmailMessage).toBeInTheDocument();
+  const errorEmailMessageElementAfterClick = screen.getByText(
+    'Email input is invalid'
+  );
+  expect(errorEmailMessageElementAfterClick).toBeInTheDocument();
 });
