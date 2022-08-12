@@ -8,26 +8,20 @@ function App() {
     password: '',
     passwordConfirmation: '',
   });
-  const [error, setError] = useState({
-    email: false,
-    password: false,
-    passwordConfirmation: false,
-  });
+  const [error, setError] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(inputValue.email);
-    if (validator.isEmail(inputValue.email)) {
-      setError({
-        ...error,
-        email: false,
-      });
-      return;
+
+    if (!validator.isEmail(inputValue.email)) {
+      setError('Email input is invalid');
+    } else if (inputValue.password.length < 5) {
+      setError('The password you entered should contain 5 or more characters');
+    } else if (inputValue.password !== inputValue.passwordConfirmation) {
+      setError("Password don't match");
+    } else {
+      setError('');
     }
-    setError({
-      ...error,
-      email: true,
-    });
   };
 
   const handleChange = (event) => {
@@ -49,8 +43,8 @@ function App() {
             name="email"
             id="email"
             className="form-control"
-            onChange={handleChange}
             value={inputValue.email}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
@@ -62,6 +56,8 @@ function App() {
             name="password"
             id="password"
             className="form-control"
+            value={inputValue.password}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
@@ -70,12 +66,14 @@ function App() {
           </label>
           <input
             type="password"
-            name="confirm-password"
+            name="passwordConfirmation"
             id="confirm-password"
             className="form-control"
+            value={inputValue.passwordConfirmation}
+            onChange={handleChange}
           />
         </div>
-        {error.email && <p className="text-danger">Email input is invalid</p>}
+        {error !== '' && <p className="text-danger">{error}</p>}
         <button type="submit">Submit</button>
       </form>
     </div>
