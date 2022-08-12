@@ -8,19 +8,21 @@ function App() {
     password: '',
     passwordConfirmation: '',
   });
-  const [error, setError] = useState('');
+  const [errorText, setErrorText] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (!validator.isEmail(inputValue.email)) {
-      setError('Email input is invalid');
+      setErrorText('Email input is invalid');
     } else if (inputValue.password.length < 5) {
-      setError('The password you entered should contain 5 or more characters');
+      setErrorText(
+        'The password you entered should contain 5 or more characters'
+      );
     } else if (inputValue.password !== inputValue.passwordConfirmation) {
-      setError("Password don't match");
+      setErrorText("Password don't match");
     } else {
-      setError('');
+      setErrorText('');
     }
   };
 
@@ -73,7 +75,7 @@ function App() {
             onChange={handleChange}
           />
         </div>
-        {error !== '' && <p className="text-danger">{error}</p>}
+        {errorText !== '' && <p className="text-danger">{errorText}</p>}
         <button type="submit">Submit</button>
       </form>
     </div>
